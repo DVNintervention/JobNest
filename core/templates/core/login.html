@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<!-- Include Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container"> <!-- Remove mt-auto class -->
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="text-center text-purple">Login</h3>
+                    <hr class="text-purple">
+                    <form action="{% url 'login' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email" class="text-purple">Email:</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd" class="text-purple">Password:</label>
+                            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-block text-white" style="background-color: purple;">Login</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="#" class="btn btn-light text-purple border border-purple">Login with Google</a>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-purple">Forgot password?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

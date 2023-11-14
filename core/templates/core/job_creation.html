@@ -1,0 +1,103 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<!-- Include Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="text-center text-purple">Create a Job Listing</h3>
+                    <hr class="text-purple">
+                    <form action="/submit_job" method="post">
+                        {% csrf_token %}
+
+                        <!-- Job Title -->
+                        <div class="form-group">
+                            <label for="job-title" class="text-purple">Job Title:</label>
+                            <input type="text" class="form-control" id="job-title" name="jobTitle" placeholder="Insert Job Title" required>
+                        </div>
+
+                        <!-- Location -->   
+                        <div class="form-group">
+                            <label for="location" class="text-purple">Location:</label>
+                            <input type="text" class="form-control" id="location" name="location" placeholder="Insert Location" required>
+                        </div>
+
+                        <!-- Employment Type -->
+                        <div class="form-group">
+                            <label for="employment-type" class="text-purple">Employment Type:</label>
+                            <select class="form-control" id="employment-type" name="employmentType" required>
+                                <option>Full-Time</option>
+                                <option>Part-Time</option>
+                                <option>Contract</option>
+                                <option>Internship</option>
+                            </select>
+                        </div>
+
+                        <!-- Salary Range -->
+                        <div class="form-group">
+                            <label for="salary-range" class="text-purple">Salary Range:</label>
+                            <input type="text" class="form-control" id="salary-range" name="salaryRange" placeholder="Insert Salary Range">
+                        </div>
+
+                        <!-- Application Deadline -->
+                        <div class="form-group">
+                            <label for="deadline" class="text-purple">Application Deadline:</label>
+                            <input type="date" class="form-control" id="deadline" name="applicationDeadline" required>
+                        </div>
+
+                        <!-- About Us -->
+                        <div class="form-group">
+                            <label for="about" class="text-purple">About Us:</label>
+                            <textarea class="form-control" id="about" name="aboutUs" rows="3" placeholder="Provide a brief description of your company, its mission, and culture." required></textarea>
+                        </div>
+
+                        <!-- Job Description -->
+                        <div class="form-group">
+                            <label for="job-description" class="text-purple">Job Description:</label>
+                            <textarea class="form-control" id="job-description" name="jobDescription" rows="4" placeholder="Outline the key responsibilities and duties of the role." required></textarea>
+                        </div>
+
+                        <!-- Key Responsibilities -->
+                        <div class="form-group">
+                            <label for="responsibilities" class="text-purple">Key Responsibilities:</label>
+                            <textarea class="form-control" id="responsibilities" name="keyResponsibilities" rows="4" placeholder="List the main responsibilities here." required></textarea>
+                        </div>
+
+                        <!-- Minimum Qualifications -->
+                        <div class="form-group">
+                            <label for="min-qualifications" class="text-purple">Minimum Qualifications:</label>
+                            <textarea class="form-control" id="min-qualifications" name="minQualifications" rows="4" placeholder="Specify the minimum qualifications here." required></textarea>
+                        </div>
+
+                        <!-- Preferred Qualifications -->
+                        <div class="form-group">
+                            <label for="pref-qualifications" class="text-purple">Preferred Qualifications:</label>
+                            <textarea class="form-control" id="pref-qualifications" name="prefQualifications" rows="4" placeholder="Specify the preferred qualifications here."></textarea>
+                        </div>
+
+                        <!-- Benefits -->
+                        <div class="form-group">
+                            <label for="benefits" class="text-purple">Benefits:</label>
+                            <textarea class="form-control" id="benefits" name="benefits" rows="3" placeholder="Highlight the perks and benefits of working at your company." required></textarea>
+                        </div>
+
+                        <!-- How to Apply -->
+                        <div class="form-group">
+                            <label for="apply" class="text-purple">How to Apply:</label>
+                            <textarea class="form-control" id="apply" name="howToApply" rows="2" placeholder="Provide clear instructions on how candidates should apply for the position." required></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-block text-white" style="background-color: purple;">Submit Job Listing</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

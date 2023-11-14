@@ -1,0 +1,73 @@
+    /* Global Styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+    }
+
+    /* Branding */
+    .branding {
+        text-align: center;
+        padding: 40px 0;
+    }
+
+    .branding h1 {
+        color: #333;
+        font-size: 2.5em;
+    }
+
+    .branding h2 {
+        color: #666;
+        margin-top: 10px;
+        font-size: 1.2em;
+    }
+
+    /* Why Job Nest Section */
+    .why-job-nest {
+        padding: 40px 0;
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #e7e7e7;
+        text-align: center;
+    }
+
+    .why-job-nest h3 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    .text-section {
+        width: 50%; /* Takes up half the screen as described */
+        padding-right: 20px; /* Some padding to separate text from image */
+        text-align: center;
+    }
+    .point-image {
+        width: 50%; /* Takes up the other half of the screen */
+        max-width: 100%; /* This ensures the image won't overflow its container */
+        height: auto; /* Maintain the image's aspect ratio */
+    }
+    .resume-screening    {
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;  /* Reverse the order so image is on the left and text on the right */
+
+    }
+
+    .top-talent, .discoverability {
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;  /* Reverse the order so image is on the left and text on the right */
+    }
+    .centered-image {
+        display: block;  /* Makes the image a block-level element */
+        max-width: 50%;  /* Sets the maximum width */
+        height: auto;    /* Maintains the aspect ratio */
+        margin-left: auto;  /* Margins set to auto will center the block */
+        margin-right: auto;
+    }

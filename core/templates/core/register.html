@@ -1,0 +1,56 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<!-- Include Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="text-center text-purple">Register</h3>
+                    <hr class="text-purple">
+                    <form action="{% url 'register' %}" method="post">
+                        {% csrf_token %}
+                    
+                        <div class="form-group">
+                            <label for="name" class="text-purple">Name:</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter name" name="first_name" required value="{{ form.first_name.value|default:'' }}">
+                            {{ form.first_name.errors }}
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="last_name" class="text-purple">Last Name:</label>
+                            <input type="text" class="form-control" id="last_name" placeholder="Enter last name" name="last_name" required value="{{ form.last_name.value|default:'' }}">
+                            {{ form.last_name.errors }}
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="email" class="text-purple">Email:</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required value="{{ form.email.value|default:'' }}">
+                            {{ form.email.errors }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password1" class="text-purple">Password:</label>
+                            <input type="password" class="form-control" id="password1" placeholder="Enter password" name="password1" required value="{{ form.password1.value|default:'' }}">
+                            {{ form.password1.errors }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password2" class="text-purple">Confirm Password:</label>
+                            <input type="password" class="form-control" id="password2" placeholder="Confirm password" name="password2" required value="{{ form.password2.value|default:'' }}">
+                            {{ form.password2.errors }}
+                        </div>
+                    
+                        <button type="submit" class="btn btn-block text-white" style="background-color: purple;">Register</button>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

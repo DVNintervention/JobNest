@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="register-type-container">
+    <style>
+        .register-type-container {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        .register-type-container .choice-box {
+            width: 600px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .register-type-container .choice {
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .register-type-container .choice:hover {
+            background-color: #f0f0f0;
+        }
+
+        .register-type-container img {
+            max-width: 100%;
+            margin: 10px 0;
+        }
+        
+    </style>
+
+    <div class="choice-box">
+        <div class="choice" onclick="location.href='register_user';">
+            <h3>Looking for a job?</h3>
+            <img src="{% static 'core/images/dev.png' %}" alt="dev" class="centered-image">
+        </div>
+
+        <div class="choice" onclick="location.href='register-company';">
+            <h3>Are you posting a job?</h3>
+            <img src="{% static 'core/images/bman.png' %}" alt="bman" class="centered-image">
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<!-- Include Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="text-center text-purple">Edit {{ field_name }}</h3>
+                    <hr class="text-purple">
+                    
+                    <!-- Form for editing the field -->
+                    <form action="{% url 'edit-field' field_name=field_name %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <!-- Include form fields for editing the field data -->
+                            <label for="{{ field_name }}" class="text-purple">{{ field_name }}:</label>
+                            <input type="text" class="form-control" id="{{ field_name }}" name="{{ field_name }}" value="{{ current_data }}">
+                        </div>
+                        <button type="submit" class="btn btn-block btn-purple text-white">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

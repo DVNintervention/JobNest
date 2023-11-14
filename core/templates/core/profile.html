@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<!-- Include Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="text-center text-purple">Profile</h3>
+                    <hr class="text-purple">
+
+                    {% for field in fields %}
+                        <div class="form-group row">
+                            <label for="{{ field.field_name }}" class="col-sm-3 col-form-label text-purple">{{ field.label }}:</label>
+                            <div class="col-sm-7">
+                                <div class="border rounded p-2">{{ field.value }}</div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-link text-purple edit-button" data-field="{{ field.field_name }}">Edit</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>x 
+</div>
+
+<script>
+    // Function to handle edit button clicks
+    document.querySelectorAll('.edit-button').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var fieldToEdit = this.getAttribute('data-field');
+            var editUrl = '{% url "edit-field" field_name="FIELD_NAME" %}'.replace('FIELD_NAME', fieldToEdit);
+            window.location.href = editUrl;
+        });
+    });
+</script>
+
+{% endblock %}

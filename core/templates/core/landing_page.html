@@ -1,0 +1,59 @@
+
+{% extends "core/base.html" %}
+
+{% block content %}
+<!-- Main Landing Page Structure -->
+{% load static %}
+<!DOCTYPE html>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/landing_page.css' %}">
+
+<div class="container">
+
+    <!-- Branding and Title -->
+    <div class="branding">
+      <h1>Job<span style="color:purple;">Nest</span></h1>
+      <h2>Bridging talent with opportunity. Streamlined, efficient, and dedicated to your career success.</h2>
+    </div>
+  
+    <!-- Image: People with Developer and Business Man -->
+    {% load static %}
+
+    <img src="{% static 'core/images/people.png' %}" alt="People" class="centered-image">
+      
+    <!-- Why Job Nest Section -->
+    <div class="why-job-nest">
+      <h3>Why Job Nest?</h3>
+      <p>Tired of sifting through endless piles of applications? Job Nest understands the importance of finding the right match, and we do so without the need for artificial intelligence. Instead, we believe in the human touch, blending experience and intuition to deliver unparalleled results.</p>
+    </div>
+  
+    <!-- Resume Screening Section -->
+    <div class="resume-screening">
+        <div class="text-section">
+            <h3>Manual Precision in Resume Screening</h3>
+            <p>Don't get lost in the automated chaos. Our dedicated team meticulously screens every application, ensuring that each candidate is genuinely aligned with your requirements.</p>
+        </div>
+        <img src="{% static 'core/images/Resume.png' %}" alt="Manual Precision in Resume Screening" class="point-image">
+    </div>
+    
+    <!-- Top Talent Section -->
+    <div class="top-talent">
+        <img src="{% static 'core/images/TopTalent.png' %}" alt="Manual Precision in Resume Screening" class="point-image">
+        <div class="text-section">
+            <h3>Streamlined Approach to Discover Top Talent</h3>
+        <p>While others rely on algorithms, we trust our instincts and industry knowledge. Dive into a curated selection of candidates from our vast database, each matched perfectly to your open roles.</p>
+        </div>
+    </div>
+  
+    <div class="discoverability">
+        <div class="text-section">
+            <h3>Genuine Discoverability</h3>
+            <p>Your Perfect Match Could Be Right Around The Corner</p>
+            <p>With Job Nest, uncover hidden gems from your own neighborhood. We bridge talent with opportunities, ensuring a successful match between candidate profiles and open roles.</p>
+        </div>
+        <img src="{% static 'core/images/Discoverability.png' %}" alt="Genuine Discoverability" class="point-image">
+    </div>
+    
+  
+  </div>
+  {% endblock %}

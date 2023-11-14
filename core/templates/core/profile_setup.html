@@ -1,0 +1,157 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+{% load static %}
+
+<!-- Include Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+<div class="container mt-5 mb-5">
+    <div class="card-container">
+        <div class="card mb-4">
+            <div class="row no-gutters">
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <label for="first_name" class="text-purple">First Name:</label>
+                        <input type="text" class="form-control mb-3" id="first_name" placeholder="Enter first name" name="first_name" required>
+                        
+                        <label for="last_name" class="text-purple">Last Name:</label>
+                        <input type="text" class="form-control" id="last_name" placeholder="Enter last name" name="last_name" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="{% static 'core/images/default-profile.png' %}" alt="Profile Picture" class="img-fluid">
+                    <button class="btn btn-purple mt-3">Take Picture</button>
+                </div>
+                <button class="next-btn btn btn-primary">Next</button>
+
+            </div>
+        </div>
+    <!-- Date of Birth Card -->
+    <div class="card mb-4">
+        <div class="row no-gutters">
+            <div class="col-md-6">
+                <div class="card-body">
+                    <label for="dob" class="text-purple">Date of Birth:</label>
+                    <input type="date" class="form-control" id="dob" name="dob" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Placeholder for the associated image -->
+                <div class="card-body text-center">
+                    <i class="fas fa-birthday-cake fa-5x text-muted"></i>
+                </div>
+            </div>
+            <button class="next-btn btn btn-primary">Next</button>
+
+        </div>
+    </div>
+
+    <!-- Address Card -->
+    <div class="card mb-4">
+        <div class="row no-gutters">
+            <div class="col-md-6">
+                <div class="card-body">
+                    <label for="address" class="text-purple">Address:</label>
+                    <textarea class="form-control" id="address" name="address" rows="4" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Placeholder for the associated image -->
+                <div class="card-body text-center">
+                    <i class="fas fa-map-marker-alt fa-5x text-muted"></i>
+                </div>
+            </div>
+            <button class="next-btn btn btn-primary">Next</button>
+            
+        </div>
+    </div>
+
+    <!-- Work Selection Card -->
+    <div class="card mb-4">
+        <div class="row no-gutters">
+            <div class="col-md-6">
+                <div class="card-body">
+                    <label for="work" class="text-purple">Work Selection:</label>
+                    <select class="form-control" id="work" name="work">
+                        <option value="frontend">Frontend Developer</option>
+                        <option value="backend">Backend Developer</option>
+                        <option value="fullstack">Full Stack Developer</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Placeholder for the associated image -->
+                <div class="card-body text-center">
+                    <i class="fas fa-laptop-code fa-5x text-muted"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let currentCardIndex = 0;
+        const cards = document.querySelectorAll('.card-container .card');
+    
+        // Show the first card initially
+        cards[currentCardIndex].classList.add('active');
+    
+        cards.forEach((card, index) => {
+            const nextButton = card.querySelector('.next-btn');
+    
+            nextButton.addEventListener('click', function() {
+                if (currentCardIndex < cards.length - 1) {
+                    cards[currentCardIndex].style.transform = 'translateX(-100%)';
+                    cards[currentCardIndex].style.opacity = '0';
+                    cards[currentCardIndex].classList.remove('active');
+    
+                    currentCardIndex++;
+                    cards[currentCardIndex].style.transform = 'translateX(0)';
+                    cards[currentCardIndex].style.opacity = '1';
+                    cards[currentCardIndex].classList.add('active');
+                } else {
+                    // You can decide what to do if we're at the last card
+                }
+            });
+        });
+    });
+    
+    
+    </script>
+    
+<style>
+    .card-container .card {
+        /* Existing styles */
+        position: relative; /* Allows absolute positioning of child elements */
+        height: 400px; /* Example height; adjust to your needs */
+        width: 600px; /* Example width; adjust to your needs */
+        overflow: hidden; /* In case any child elements go outside the card boundaries */
+        display: none;  /* Hide all cards */
+        transition: transform 0.5s, opacity 0.5s;  /* Add transitions for smoother effects */
+
+    }
+    
+    .next-btn {
+        position: absolute; /* Position button absolutely */
+        bottom: 20px; /* 20px from the bottom of the card */
+        right: 20px; /* 20px from the right side of the card */
+        z-index: 10; /* Ensure it appears above other content if needed */
+    }
+
+    .card-container .card.active {
+        display: block;  /* Only display the active card */
+    }
+    .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;  /* Adjust this if you have other elements on the page */
+    }
+
+    
+</style>
+{% endblock %}

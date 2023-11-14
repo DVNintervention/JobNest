@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+
+<body>
+    <div class="dashboard">
+        <!-- Left side -->
+        <div class="left-side">
+            <!-- JobNest Text -->
+            <h1>Job<span style="color:purple;">Nest</span></h1>
+            
+            <!-- Logo -->
+            <img src="{% static 'core/images/logo.png' %}" alt="JobNest Logo" class="logo-image" style="margin-left: 10px;">
+            
+            <!-- Sandwich Menu Icon -->
+            <span class="menu-icon">&#9776;</span>
+        </div>
+
+            <!-- Right side -->
+            <div class="right-side">
+                {% if user.is_authenticated %}
+                    <span class="user-info">Logged in as: {{ user.username }}</span>
+                    <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn login-btn">Login</a>
+                <a href="{% url 'register' %}" class="btn Register-btn">Register</a>
+                {% endif %}
+            </div>
+
+    
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Page Name: <span id="page-name">Home</span></p>
+        <p>Support: support@jobportal.com</p>
+    </footer>
+
+    <!-- Add your JS scripts here, e.g., jQuery, Bootstrap JS, etc. -->
+</body>
+
+</html>
