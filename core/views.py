@@ -1,17 +1,13 @@
-from django.shortcuts import render, redirect
+from .models import Profile, JobSeeker, Skill, Language,Company,JobPosting
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .forms import RegisterForm
 from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from .models import Profile, JobSeeker, Skill, Language
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-from core.models import JobSeeker
+from django.contrib.auth import logout,authenticate, login
 from django.contrib.auth.models import User
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.models import User
-from core.models import JobSeeker, WorkExperience
+from .forms import RegisterForm
+from django.urls import reverse_lazy
+from django.core.files.storage import default_storage
 
 # Create your views here.
 def index(request):
@@ -21,14 +17,57 @@ def landing_view(request):
     return render(request, 'core/landing_page.html')
 
 class UserLoginView(LoginView):
-    template_name = 'core/login.html' # Provide the path to your login template here
-    success_url = reverse_lazy('core/success') # Provide the name of the URL to redirect after successful login
+    template_name = 'core/login.html' 
+    success_url = reverse_lazy('core/success') 
 
 def profile_setup(request):
     return render(request, 'core/profile_setup.html')
 
+@login_required
 def job_creation(request):
-    return render(request, 'core/job_creation.html')
+    try:
+        company = request.user.company
+    except Company.DoesNotExist:
+        messages.error(request, "You are not associated with a company.")
+        return redirect('some-other-view')
+
+    skills = Skill.objects.all()  
+
+    if request.method == 'POST':
+        job_title = request.POST.get('jobTitle')
+        location = request.POST.get('location')
+        employment_type = request.POST.get('employmentType')
+        salary_range = request.POST.get('salaryRange')
+        application_deadline = request.POST.get('applicationDeadline')
+        about_us = request.POST.get('aboutUs')
+        job_description = request.POST.get('jobDescription')
+        key_responsibilities = request.POST.get('keyResponsibilities')
+        benefits = request.POST.get('benefits')
+        how_to_apply = request.POST.get('howToApply')
+
+        job_posting = JobPosting(
+            company=company,
+            job_title=job_title,
+            location=location,
+            employment_type=employment_type,
+            salary_range=salary_range,
+            application_deadline=application_deadline,
+            about_us=about_us,
+            job_description=job_description,
+            key_responsibilities=key_responsibilities,
+            benefits=benefits,
+            how_to_apply=how_to_apply,
+        )
+        job_posting.save()
+        skill_ids = request.POST.getlist('skills')
+        for skill_id in skill_ids:
+            skill = Skill.objects.get(id=skill_id)
+            job_posting.skills.add(skill)
+
+        messages.success(request, "Job listing created successfully!")
+        return redirect('index') 
+
+    return render(request, 'core/job_creation.html', {'skills': skills})
 
 def profile(request):
     return render(request, 'core/profile.html')
@@ -37,14 +76,20 @@ def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False) # Do not save the form directly to the database yet
+            user = form.save(commit=False)
             email = form.cleaned_data.get('email')
-            user.username = email  # Set the email as username
-            user.save()  # Save the user object to the database
+            user.username = email
+            user.save()
             messages.success(request, f'Account created for {email}!')
-            return redirect('core/register_company.html')
+
+            user = authenticate(username=email, password=form.cleaned_data.get('password1'))
+            if user is not None:
+                login(request, user)
+
+            return redirect('register_type')
     else:
         form = RegisterForm()
+
     return render(request, 'core/register.html', {'form': form})
 
 @login_required
@@ -53,57 +98,90 @@ def register_type(request):
 
 @login_required
 def register_company(request):
-    return render(request,'core/register_company.html')
+    if request.method == 'POST':
+        company_name = request.POST.get('company_name')
+        company_description = request.POST.get('company_description')
+        address = request.POST.get('address')
+        industry = request.POST.get('industry')
+        website = request.POST.get('website')
+        company_logo = request.FILES.get('company_logo') 
+
+        try:
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            profile.user_type = 'company'
+            profile.save()
+
+            company = Company(
+                user=request.user,
+                company_name=company_name,
+                company_description=company_description,
+                address=address,
+                industry=industry,
+                website=website
+            )
+
+            if company_logo:
+                file_path = default_storage.save(company_logo.name, company_logo)
+                company.company_logo = file_path
+
+            company.save()
+            messages.success(request, "Company profile created successfully!")
+            return redirect('some-success-view')
+
+        except Exception as e:
+            messages.error(request, f"Error creating company profile: {str(e)}")
+
+    return render(request, 'core/register_company.html')
 
 @login_required
 def register_user(request):
-    if request.method == 'POST':
-        user = request.user  # Fetch the user from the request object
+    skills = Skill.objects.all()  
+    languages = Language.objects.all()  
 
-        # Create or update a Profile object and set user_type to 'jobseeker'
+    if request.method == 'POST':
+        user = request.user  
         profile, created = Profile.objects.get_or_create(user=user)
         profile.user_type = 'jobseeker'
         profile.save()
 
-        # Assuming you haven't created a JobSeeker instance for this user yet
-        jobseeker = JobSeeker(user=user, address=request.POST['address'], phone_number=request.POST['phone_number'], education=request.POST['education'], academic_status=request.POST['academic_status'], work_experience=request.POST['work_experience'], resume_description=request.POST['resume_description'])
+        jobseeker = JobSeeker(
+            user=user,
+            address=request.POST['address'],
+            phone_number=request.POST['phone_number'],
+            education=request.POST['education'],
+            academic_status=request.POST['academic_status'],
+            #work_experience=request.POST['work_experience'],
+            resume_description=request.POST['resume_description']
+        )
         jobseeker.save()
 
-        # Handle skills as text input:
-        skill_names = request.POST.getlist('skills')
-        for skill_name in skill_names:
-            skill, created = Skill.objects.get_or_create(name=skill_name.strip())
+        skill_ids = request.POST.getlist('skills')
+        for skill_id in skill_ids:
+            skill = Skill.objects.get(id=skill_id)
             jobseeker.skills.add(skill)
 
-        # For ManyToMany fields like languages, if they are fetched as IDs:
-        languages = request.POST.getlist('languages')
-        for lang_id in languages:
+        language_ids = request.POST.getlist('languages')
+        for lang_id in language_ids:
             language = Language.objects.get(id=lang_id)
             jobseeker.languages.add(language)
 
-        # Redirect the user to a success page or dashboard after profile completion
-        return redirect('profile')  # Assuming the name of the URL pattern for the profile page is 'profile'
+        return redirect('job_seeker_dashboard')  
 
-    # Render the registration form if it's a GET request
-    return render(request, 'register_user')
+    return render(request, 'core/register_user.html', {
+        'skills': skills,
+        'languages': languages,
+    })
 
 from django.http import JsonResponse
 
 def update_resume(request):
     if request.method == 'POST':
-        # In this example, we don't perform any server-side processing
-        # You can add your own logic here if needed
-        
-        # Return a JSON response indicating that the resume has been updated
         response_data = {'message': 'Resume updated successfully'}
         return JsonResponse(response_data)
 
-    # If the request method is not POST, return an empty response
     return JsonResponse({})
 
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.models import User
-from core.models import JobSeeker, WorkExperience
+
 
 def display_profile(request, user_id):
     user = get_object_or_404(User, pk=user_id)
@@ -119,7 +197,6 @@ def display_profile(request, user_id):
         {"label": "Academic Status", "value": jobseeker.academic_status, "field_name": "academic_status"},
         {"label": "Work Experience", "value": jobseeker.work_experience, "field_name": "work_experience"},
         {"label": "Resume Description", "value": jobseeker.resume_description, "field_name": "resume_description"},
-        # ... add other fields similarly ...
     ]
 
     return render(request, 'core/profile.html', {
@@ -127,20 +204,34 @@ def display_profile(request, user_id):
     })
 
 
-from django.shortcuts import render, redirect
 
 def edit_field(request, field_name):
     if request.method == 'POST':
-        # Handle form submission and update the field in the database
-        # Redirect back to the "Edit Resume" page after saving changes
-        return redirect('edit_resume')  # Replace 'edit_resume' with your actual URL name
 
-    # Render the field editing form template
+        return redirect('edit_resume')  
+
     context = {
-        'field_name': field_name,  # You can use this context variable in the template to determine which field is being edited
+        'field_name': field_name, 
     }
     return render(request, 'core/edit_field.html', context)
 
 def logout_view(request):
     logout(request)
-    return redirect('landing_page')  # Redirect to the home page (or any other page you'd like).
+    return redirect('landing_page')  
+
+@login_required
+def job_seeker_dashboard(request):
+    try:
+        jobseeker = JobSeeker.objects.get(user=request.user)
+        jobseeker_skills = jobseeker.skills.all()
+        matching_job_postings = JobPosting.objects.filter(skills__in=jobseeker_skills).distinct()
+    except JobSeeker.DoesNotExist:
+        matching_job_postings = []
+
+    context = {'job_postings': matching_job_postings}
+    return render(request, 'core/job_seeker_dashboard.html', context)
+
+def job_posting_detail(request, posting_id):
+    posting = get_object_or_404(JobPosting, id=posting_id)
+    context = {'posting': posting}
+    return render(request, 'core/job_posting_detail.html', context)

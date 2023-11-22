@@ -49,3 +49,49 @@
         text-decoration: none; /* Ensure that no underline appears on hover */
     }
     
+
+
+    .user-image {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    
+    .dropdown-menu {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .dropdown-item {
+        color: #333;
+    }
+    
+    .dropdown-item:hover, .dropdown-item:focus {
+        color: #fff;
+        background-color: purple; /* Your theme color */
+    }
+    
+    .btn-outline-primary {
+        border-color: purple;
+        color: purple;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: purple;
+        color: #fff;
+    }
+    
+    .btn-primary {
+        background-color: purple;
+        border-color: purple;
+    }
+    
+    .btn-primary:hover {
+        background-color: darken(purple, 10%);
+        border-color: darken(purple, 10%);
+    }
+    
+
+
+

@@ -1,55 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Portal</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    </head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
 
 <body>
     <div class="dashboard">
-        <!-- Left side -->
         <div class="left-side">
-            <!-- JobNest Text -->
             <h1>Job<span style="color:purple;">Nest</span></h1>
-            
-            <!-- Logo -->
             <img src="{% static 'core/images/logo.png' %}" alt="JobNest Logo" class="logo-image" style="margin-left: 10px;">
-            
-            <!-- Sandwich Menu Icon -->
-            <span class="menu-icon">&#9776;</span>
+
+            {% if user.is_authenticated %}
+                <div class="left-side-buttons">
+                    
+                        <a href="{% url 'job_seeker_dashboard' %}" class="btn btn-outline-primary">Dashboard</a>
+                        <a href="{% url 'job_creation' %}" class="btn btn-outline-primary">Create Jobs</a>
+                </div>
+            {% endif %}
         </div>
-
-            <!-- Right side -->
-            <div class="right-side">
-                {% if user.is_authenticated %}
-                    <span class="user-info">Logged in as: {{ user.username }}</span>
-                    <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
-                {% else %}
-                <a href="{% url 'login' %}" class="btn login-btn">Login</a>
-                <a href="{% url 'register' %}" class="btn Register-btn">Register</a>
-                {% endif %}
+<div class="right-side">
+    {% if user.is_authenticated %}
+        <div class="dropdown">
+            <img src="{% static 'core/images/user.png' %}" alt="User Image" class="user-image dropdown-toggle" id="userMenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuDropdown">
+                <a class="dropdown-item" href="#">Hello, {{ user.first_name }}</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
             </div>
-
-    
+        </div>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-primary">Login</a>
+        <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+    {% endif %}
+</div>
+        
     </div>
 
-    <!-- Main Content -->
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
 
-    <!-- Footer -->
     <footer>
-        <p>Page Name: <span id="page-name">Home</span></p>
+        <p>DVNsoft.net <span id="page-name"></span></p>
         <p>Support: support@jobportal.com</p>
+        
     </footer>
+<div style="padding: 10px; background-color: yellow; color: black;">
+    <strong>Debug:</strong> User Type - 
+    {% if user.is_authenticated and profile %}
+        {{ profile.user_type }}
+    {% else %}
+        Not Available
+    {% endif %}
+</div>
 
-    <!-- Add your JS scripts here, e.g., jQuery, Bootstrap JS, etc. -->
+
+    <script>
+        function toggleUserMenu() {
+            var menu = document.getElementById("userMenu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+    
+        document.addEventListener('click', function(event) {
+            var menu = document.getElementById("userMenu");
+            var userImage = document.querySelector(".user-image");
+    
+            if (!menu.contains(event.target) && !userImage.contains(event.target)) {
+                menu.style.display = "none";
+            }
+        });
+    </script>
 </body>
-
 </html>
+
+
+<style>
+    .user-image {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid gray; /* Add a gray border */
+    }
+    
+    .user-menu-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+    
+    .user-menu-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+    
+    .user-menu-content a:hover {
+        background-color: #f1f1f1;
+    }
+    .btn-primary {
+        background-color: #800080; /* Custom purple color */
+        border-color: #800080; /* Custom purple color */
+    }
+    
+    .btn-primary:hover {
+        background-color: #6a006a; /* Darker shade for hover state */
+        border-color: #6a006a; /* Darker shade for hover state */
+    }
+    .btn-outline-primary {
+        color: #800080; /* Custom purple color for text */
+        border-color: #800080; /* Custom purple border color */
+    }
+    
+    .btn-outline-primary:hover {
+        color: #fff; /* White text on hover */
+        background-color: #800080; /* Custom purple background on hover */
+        border-color: #800080; /* Custom purple border on hover */
+    }
+</style>    

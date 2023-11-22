@@ -1,0 +1,33 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
+
+<div class="container">
+    <div class="dashboard-header">
+        <h1>Job<span style="color:purple;">Nest</span> Dashboard</h1>
+        <h2>Your personalized job matches</h2>
+    </div>
+
+    <div class="job-matches">
+        <h3>Matching Job Postings</h3>
+        {% if job_postings %}
+            <div class="job-listings">
+                {% for posting in job_postings %}
+                    <div class="job-posting">
+                        <h4>{{ posting.job_title }}</h4>
+                        <p><strong>Company:</strong> {{ posting.company.company_name }}</p>
+                        <p><strong>Location:</strong> {{ posting.location }}</p>
+                        <p><strong>Description:</strong> {{ posting.job_description }}</p>
+                        <a href="{% url 'job_posting_detail' posting.id %}" class="view-details">View Details</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No matching job postings found.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

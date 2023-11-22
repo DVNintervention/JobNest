@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,AbstractUser
+
 
 class Profile(models.Model):
     USER_TYPES = (
@@ -49,11 +50,19 @@ class Company(models.Model):
     industry = models.CharField(max_length=255)
     website = models.URLField()
 
-
 class JobPosting(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     job_title = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
+    employment_type = models.CharField(max_length=50) 
+    salary_range = models.CharField(max_length=100, blank=True, null=True)  
+    application_deadline = models.DateField()
+    about_us = models.TextField(blank=True, null=True)  
+    job_description = models.TextField()
+    skills = models.ManyToManyField(Skill) 
+    key_responsibilities = models.TextField()
+    benefits = models.TextField(blank=True, null=True)  
+    how_to_apply = models.TextField()
 
 
 class Chat(models.Model):

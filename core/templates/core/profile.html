@@ -1,7 +1,6 @@
 {% extends "core/base.html" %}
 
 {% block content %}
-<!-- Include Bootstrap CSS -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <div class="container mt-5 mb-5">
@@ -31,7 +30,6 @@
 </div>
 
 <script>
-    // Function to handle edit button clicks
     document.querySelectorAll('.edit-button').forEach(function(button) {
         button.addEventListener('click', function() {
             var fieldToEdit = this.getAttribute('data-field');
