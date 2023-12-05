@@ -1,0 +1,63 @@
+
+.container {
+    max-width: 600px; 
+    margin: 0 auto; 
+    padding: 20px;
+    border: 1px solid #ccc; 
+    background-color: #f9f9f9; 
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    max-width: 100px;
+    height: auto;
+  }
+  
+  .job-title-box {
+    background-color: #eee; 
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .job-description {
+    margin-bottom: 20px;
+  }
+  
+  .skills-list {
+    list-style: none; 
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  
+  .skills-list li:before {
+    content: "✓"; 
+    color: green; 
+    margin-right: 5px;
+  }
+  
+  .how-to-apply {
+    margin-bottom: 20px;
+  }
+  
+  .apply-btn {
+    background-color: #0044cc; 
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .centered-text {
+    text-align: center;
+  }
+  
+
+  

@@ -18,15 +18,21 @@
         <div class="left-side">
             <h1>Job<span style="color:purple;">Nest</span></h1>
             <img src="{% static 'core/images/logo.png' %}" alt="JobNest Logo" class="logo-image" style="margin-left: 10px;">
-
+        
             {% if user.is_authenticated %}
                 <div class="left-side-buttons">
-                    
+                    {% if user.groups.all.0.name == "Jobseekers" %}
                         <a href="{% url 'job_seeker_dashboard' %}" class="btn btn-outline-primary">Dashboard</a>
+                        <a href="{% url 'job_map' %}" class="btn btn-outline-primary">Job Map</a>
+                    {% elif user.groups.all.0.name == "company" %}
                         <a href="{% url 'job_creation' %}" class="btn btn-outline-primary">Create Jobs</a>
+                        <a href="{% url 'company_dashboard' %}" class="btn btn-outline-primary">Dashboard</a>
+
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
+        
 <div class="right-side">
     {% if user.is_authenticated %}
         <div class="dropdown">
@@ -52,14 +58,19 @@
     </div>
 
     <footer>
-        <p>DVNsoft.net <span id="page-name"></span></p>
-        <p>Support: support@jobportal.com</p>
-        
+        <br>
+   
     </footer>
-<div style="padding: 10px; background-color: yellow; color: black;">
-    <strong>Debug:</strong> User Type - 
-    {% if user.is_authenticated and profile %}
-        {{ profile.user_type }}
+<div style="padding: 10px; background-color: purple; color: white;">
+    <p>DVNsoft.net <span id="page-name"></span></p>
+    <p>Support: support@jobportal.com</p>
+    <strong>Debug:</strong> User Group - 
+    {% if user.is_authenticated %}
+        {% if user.groups.all %}
+            {{ user.groups.all.0.name }}
+        {% else %}
+            None
+        {% endif %}
     {% else %}
         Not Available
     {% endif %}
@@ -91,7 +102,7 @@
         height: 40px;
         border-radius: 50%;
         cursor: pointer;
-        border: 2px solid gray; /* Add a gray border */
+        border: 2px solid gray; 
     }
     
     .user-menu-content {
@@ -115,22 +126,22 @@
         background-color: #f1f1f1;
     }
     .btn-primary {
-        background-color: #800080; /* Custom purple color */
-        border-color: #800080; /* Custom purple color */
+        background-color: #800080;
+        border-color: #800080;
     }
     
     .btn-primary:hover {
-        background-color: #6a006a; /* Darker shade for hover state */
-        border-color: #6a006a; /* Darker shade for hover state */
+        background-color: #6a006a;
+        border-color: #6a006a; 
     }
     .btn-outline-primary {
-        color: #800080; /* Custom purple color for text */
-        border-color: #800080; /* Custom purple border color */
+        color: #800080; 
+        border-color: #800080; 
     }
     
     .btn-outline-primary:hover {
-        color: #fff; /* White text on hover */
-        background-color: #800080; /* Custom purple background on hover */
-        border-color: #800080; /* Custom purple border on hover */
+        color: #fff; 
+        background-color: #800080; 
+        border-color: #800080; 
     }
 </style>    

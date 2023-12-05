@@ -1,11 +1,85 @@
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container">
-    <h2>{{ posting.job_title }}</h2>
-    <p><strong>Company:</strong> {{ posting.company.company_name }}</p>
-    <p><strong>Location:</strong> {{ posting.location }}</p>
-    <p><strong>Description:</strong> {{ posting.job_description }}</p>
-    <!-- Include additional fields as needed -->
+<link rel="stylesheet" href="{% static 'css/job_posting_detail.css' %}">
+
+<div class="container mt-5 mb-5"> 
+    <div class="header">
+        <h1>Job Opening</h1>
+        <img src="{{ posting.company.get_company_logo_url }}" alt="{{ posting.company.company_name }} Logo" class="logo">
+    </div>
+    <p>The {{ posting.company.company_name }} team is currently looking for candidates to fill the position of:</p>
+    <div class="job-title-box">
+        <h2 class="centered-text">{{ posting.job_title }}</h2>
+    </div>        
+    <hr>
+    <div class="job-description">
+        <strong>Description:</strong>
+        <p>{{ posting.job_description }}</p>
+        <strong>Required skills:</strong>
+        <ul class="skills-list">
+            {% for skill in posting.skills.all %}
+            <li>{{ skill.name }}</li>
+            {% endfor %}
+        </ul>
+        <strong>Application deadline:</strong>
+        <p>{{ posting.application_deadline }}</p>
+    </div>
+    <div class="how-to-apply">
+        <strong>How to apply</strong>
+        <p>Contact us: {{ posting.company.user.email }}</p>
+    </div>
+    <div class="apply-section">
+        {% if user.is_authenticated and user.groups.all.0.name == "Jobseekers" %}
+            {% if user_application %}
+                {% if user_application.status == 'reviewed' %}
+                <a href="{% url 'view_chat' user_application.chat.id %}" class="apply-btn">View Chat</a>
+                {% elif user_application.status == 'interviewed' %}
+                    <p style="color: blue;">Application Status: Under Review</p>
+                {% elif user_application.status == 'accepted' %}
+                    <p style="color: green;">Application Status: Accepted</p>
+                {% elif user_application.status == 'rejected' %}
+                    <p style="color: red;">Application Status: Rejected</p>
+                {% endif %}
+            {% else %}
+                <form action="{% url 'apply_to_job' posting.id %}" method="post">
+                    {% csrf_token %}
+                    <textarea name="cover_letter" placeholder="Your cover letter" required></textarea>
+                    <textarea name="additional_notes" placeholder="Any additional notes"></textarea>
+                    <button type="submit" class="apply-btn">Apply to this Job</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    </div>
+    
+    {% if user.is_authenticated and user.groups.all.0.name == "company" %}
+    <div class="applicants-section">
+        <h3>Applicants</h3>
+        <hr>
+        {% for application in posting.jobapplication_set.all %}
+            <div class="applicant">
+                <p>Name: {{ application.jobseeker.user.first_name }} {{ application.jobseeker.user.last_name }}</p>
+                <p>Email: {{ application.jobseeker.user.email }}</p>
+                <p>Phone Number: {{ application.jobseeker.phone_number }}</p>
+                <p>Resume Description: {{ application.jobseeker.resume_description }}</p>
+
+                <form action="{% url 'update_application_status' application.id %}" method="post">
+                    {% csrf_token %}
+                    <select name="status" onchange="this.form.submit()">
+                        {% for status, status_display in application.STATUS_CHOICES %}
+                            <option value="{{ status }}" {% if application.status == status %}selected{% endif %}>{{ status_display }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+                <a href="{% url 'start_chat_with_jobseeker' application.id %}">Chat</a>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 </div>
+
+
 {% endblock %}

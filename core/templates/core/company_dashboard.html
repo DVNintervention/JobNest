@@ -6,17 +6,16 @@
 
 <div class="container">
     <div class="dashboard-header">
-        <h1>Dashboard</h1>
+        <h1>Company Dashboard</h1>
     </div>
 
-    <div class="job-matches">
-        <h3>Your personalized job matches</h3>
-        {% if job_postings %}
+    <div class="your-job-postings">
+        <h3>Your Job Postings</h3>
+        {% if company_job_postings %}
             <div class="job-listings">
-                {% for posting in job_postings %}
+                {% for posting in company_job_postings %}
                     <div class="job-posting">
                         <h4>{{ posting.job_title }}</h4>
-                        <p><strong>Company:</strong> {{ posting.company.company_name }}</p>
                         <p><strong>Location:</strong> {{ posting.location }}</p>
                         <p><strong>Description:</strong> {{ posting.job_description }}</p>
                         <a href="{% url 'job_posting_detail' posting.id %}" class="view-details">View Details</a>
@@ -24,7 +23,7 @@
                 {% endfor %}
             </div>
         {% else %}
-            <p>No matching job postings found.</p>
+            <p>No job postings found.</p>
         {% endif %}
     </div>
 </div>

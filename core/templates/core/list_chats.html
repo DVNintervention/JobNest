@@ -1,0 +1,10 @@
+{% for chat in chats %}
+    <div class="chat-item">
+        {% if request.user.profile.user_type == 'jobseeker' %}
+            <p>Chat with {{ chat.company.company_name }}</p>
+        {% else %}
+            <p>Chat with {{ chat.jobseeker.user.username }}</p>
+        {% endif %}
+        <a href="{% url 'view_chat' chat.id %}">View Chat</a>
+    </div>
+{% endfor %}

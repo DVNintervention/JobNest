@@ -68,8 +68,10 @@ class JobPosting(models.Model):
 class Chat(models.Model):
     jobseeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    job_posting = models.ForeignKey(JobPosting, on_delete=models.SET_NULL, null=True, blank=True)
     started_at = models.DateTimeField(auto_now_add=True)
-    last_message_at = models.DateTimeField()
+    last_message_at = models.DateTimeField(null=True, blank=True)
+
 
 
 class Message(models.Model):
