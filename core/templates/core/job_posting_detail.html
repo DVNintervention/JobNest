@@ -33,8 +33,8 @@
     <div class="apply-section">
         {% if user.is_authenticated and user.groups.all.0.name == "Jobseekers" %}
             {% if user_application %}
-                {% if user_application.status == 'reviewed' %}
-                <a href="{% url 'view_chat' user_application.chat.id %}" class="apply-btn">View Chat</a>
+            {% if user_application.status == 'reviewed' and chat_id %}
+            <a href="{% url 'view_chat' chat_id %}" class="apply-btn">View Chat</a>
                 {% elif user_application.status == 'interviewed' %}
                     <p style="color: blue;">Application Status: Under Review</p>
                 {% elif user_application.status == 'accepted' %}

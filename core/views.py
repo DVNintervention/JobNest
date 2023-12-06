@@ -266,20 +266,27 @@ def job_seeker_dashboard(request):
     context = {'job_postings': matching_job_postings}
     return render(request, 'core/job_seeker_dashboard.html', context)
 
+# views.py
+
 def job_posting_detail(request, posting_id):
     posting = get_object_or_404(JobPosting, id=posting_id)
     user_application = None
-    chat = None
+    chat_id = None
 
-    if request.user.is_authenticated and hasattr(request.user, 'jobseeker'):
-        user_application = JobApplication.objects.filter(jobseeker=request.user.jobseeker, job_posting=posting).first()
-        if user_application:
-            chat = Chat.objects.filter(jobseeker=request.user.jobseeker, job_posting=posting).first()
+    if request.user.is_authenticated:
+        if hasattr(request.user, 'jobseeker'):
+            user_application = JobApplication.objects.filter(jobseeker=request.user.jobseeker, job_posting=posting).first()
+            if user_application:
+                chat = Chat.objects.filter(jobseeker=request.user.jobseeker, job_posting=posting).first()
+                chat_id = chat.id if chat else None
+        elif hasattr(request.user, 'company'):
+            # Logic for company user to get the chat ID
+            pass  # Implement as needed
 
     context = {
         'posting': posting,
         'user_application': user_application,
-        'chat': chat,  
+        'chat_id': chat_id,
     }
     return render(request, 'core/job_posting_detail.html', context)
 
