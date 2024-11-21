@@ -19,7 +19,6 @@ urlpatterns = [
     path('dashboard/', views.job_seeker_dashboard, name='job_seeker_dashboard'),
     path('job-posting/<int:posting_id>/', views.job_posting_detail, name='job_posting_detail'),
     path('edit-field/<str:field_name>/', views.edit_field_view, name='edit-field'),
-    path('start-chat/<int:job_posting_id>/', views.start_chat, name='start_chat'),
     path('chats/', views.list_chats, name='list_chats'),
     path('chat/<int:chat_id>/', views.view_chat, name='view_chat'),
     path('chat/<int:chat_id>/send-message/', views.send_message, name='send_message'),
@@ -27,6 +26,6 @@ urlpatterns = [
     path('job-map/', views.job_map, name='job_map'),
     path('apply-to-job/<int:posting_id>/', views.apply_to_job, name='apply_to_job'),
     path('update-application-status/<int:application_id>/', views.update_application_status, name='update_application_status'),
-    path('company-dashboard/', views.company_dashboard, name='company_dashboard'),
-
 ]
+
+
