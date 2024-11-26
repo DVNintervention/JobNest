@@ -19,7 +19,11 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
+<<<<<<< HEAD
           python-version: '3.10'
+=======
+          python-version: '3.10' 
+>>>>>>> ba3483c (Set SonarCloud token)
 
       # Paso 3: Instalar dependencias
       - name: Install dependencies
